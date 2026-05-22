@@ -1,314 +1,210 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Samarth Premium Downloader</title>  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Poppins',sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samarth Premium Downloader</title>
 
-    body{
-      background:#000;
-      color:#fff;
-      min-height:100vh;
-      overflow-x:hidden;
-      position:relative;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-    .bg{
-      position:fixed;
-      inset:0;
-      background:linear-gradient(135deg,rgba(255,0,90,.15),#000,rgba(0,120,255,.15));
-      z-index:-2;
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins;}
+body{
+  background:#000;
+  color:#fff;
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-    .blur1,.blur2{
-      position:fixed;
-      width:320px;
-      height:320px;
-      border-radius:50%;
-      filter:blur(120px);
-      z-index:-1;
-    }
+.bg{
+  position:fixed;inset:0;
+  background:linear-gradient(135deg,#ff004c22,#000,#0066ff22);
+  z-index:-2;
+}
 
-    .blur1{
-      background:#ff004c;
-      top:40px;
-      left:40px;
-    }
+.blur1,.blur2{
+  position:fixed;
+  width:300px;height:300px;
+  filter:blur(120px);
+  border-radius:50%;
+  z-index:-1;
+}
 
-    .blur2{
-      background:#0066ff;
-      bottom:40px;
-      right:40px;
-    }
+.blur1{background:red;top:50px;left:50px;}
+.blur2{background:blue;bottom:50px;right:50px;}
 
-    .container{
-      width:100%;
-      max-width:850px;
-      margin:auto;
-      padding:40px 20px;
-    }
+.container{
+  max-width:800px;
+  margin:auto;
+  padding:40px 20px;
+}
 
-    .logo{
-      text-align:center;
-      margin-bottom:40px;
-    }
+.title{
+  text-align:center;
+  font-size:60px;
+  font-weight:800;
+  background:linear-gradient(to right,#ff004c,#ff00aa,#0066ff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
 
-    .logo h1{
-      font-size:70px;
-      font-weight:900;
-      background:linear-gradient(to right,#ff004c,#ff00c8,#0099ff);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-    }
+.card{
+  margin-top:30px;
+  padding:25px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:25px;
+  backdrop-filter:blur(20px);
+}
 
-    .logo p{
-      color:#aaa;
-      letter-spacing:4px;
-      margin-top:10px;
-      text-transform:uppercase;
-    }
+input,select{
+  width:100%;
+  padding:15px;
+  margin-top:10px;
+  border-radius:15px;
+  border:none;
+  background:#111;
+  color:#fff;
+  outline:none;
+}
 
-    .card{
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.1);
-      backdrop-filter:blur(20px);
-      border-radius:30px;
-      padding:30px;
-      box-shadow:0 0 40px rgba(0,0,0,.5);
-    }
+button{
+  width:100%;
+  padding:15px;
+  margin-top:15px;
+  border:none;
+  border-radius:15px;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  background:linear-gradient(to right,#ff004c,#0066ff);
+}
 
-    .input-group{
-      margin-bottom:20px;
-    }
+.result{
+  display:none;
+  margin-top:20px;
+  background:#111;
+  border-radius:20px;
+  overflow:hidden;
+}
 
-    .input-group label{
-      display:block;
-      margin-bottom:10px;
-      color:#aaa;
-      font-size:14px;
-    }
+.result img{width:100%;height:250px;object-fit:cover;}
 
-    .input-group input,
-    .input-group select{
-      width:100%;
-      padding:16px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.1);
-      background:rgba(0,0,0,.5);
-      color:#fff;
-      outline:none;
-      font-size:15px;
-    }
+.result-content{padding:20px;}
 
-    button{
-      width:100%;
-      padding:16px;
-      border:none;
-      border-radius:18px;
-      background:linear-gradient(to right,#ff004c,#0066ff);
-      color:#fff;
-      font-size:18px;
-      font-weight:700;
-      cursor:pointer;
-      transition:.3s;
-    }
+a.download{
+  display:block;
+  margin-top:15px;
+  padding:15px;
+  text-align:center;
+  background:linear-gradient(to right,#00c853,#00e676);
+  border-radius:15px;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+}
 
-    button:hover{
-      transform:scale(1.03);
-    }
+.error{
+  display:none;
+  margin-top:15px;
+  color:#ff4d4d;
+}
+</style>
+</head>
 
-    .error{
-      display:none;
-      margin-top:20px;
-      padding:14px;
-      border-radius:16px;
-      background:rgba(255,0,0,.1);
-      border:1px solid rgba(255,0,0,.2);
-      color:#ff8080;
-      text-align:center;
-    }
+<body>
 
-    .result{
-      display:none;
-      margin-top:30px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:30px;
-      overflow:hidden;
-    }
-
-    .result img{
-      width:100%;
-      height:300px;
-      object-fit:cover;
-    }
-
-    .result-content{
-      padding:25px;
-    }
-
-    .result-content h2{
-      margin-bottom:20px;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:15px;
-      margin-bottom:20px;
-    }
-
-    .stat{
-      background:rgba(0,0,0,.4);
-      padding:15px;
-      border-radius:16px;
-      color:#aaa;
-    }
-
-    .download-btn{
-      display:block;
-      width:100%;
-      text-align:center;
-      padding:16px;
-      border-radius:18px;
-      background:linear-gradient(to right,#00c853,#00e676);
-      color:#fff;
-      text-decoration:none;
-      font-weight:700;
-      transition:.3s;
-    }
-
-    .download-btn:hover{
-      transform:scale(1.03);
-    }
-
-    footer{
-      text-align:center;
-      margin-top:40px;
-      color:#777;
-    }
-
-    @media(max-width:768px){
-      .logo h1{
-        font-size:50px;
-      }
-
-      .stats{
-        grid-template-columns:1fr;
-      }
-    }
-  </style></head>
-<body><div class="bg"></div>
+<div class="bg"></div>
 <div class="blur1"></div>
-<div class="blur2"></div><div class="container">  <div class="logo">
-    <h1>SAMARTH</h1>
-    <p>Premium YouTube Downloader</p>
-  </div>  <div class="card"><div class="input-group">
-  <label>YouTube Video URL</label>
-  <input type="text" id="videoUrl" placeholder="Paste YouTube link here...">
-</div>
+<div class="blur2"></div>
 
-<div class="input-group">
-  <label>Select Quality</label>
-  <select id="quality">
-    <option value="144">144p</option>
-    <option value="240">240p</option>
-    <option value="360">360p</option>
-    <option value="480">480p</option>
-    <option value="720" selected>720p</option>
-    <option value="1080">1080p</option>
-  </select>
-</div>
+<div class="container">
 
-<button onclick="downloadVideo()" id="downloadBtn">Download Now</button>
+<h1 class="title">SAMARTH</h1>
+
+<div class="card">
+
+<input id="url" placeholder="Enter YouTube URL">
+<select id="quality">
+  <option value="144">144p</option>
+  <option value="360">360p</option>
+  <option value="720" selected>720p</option>
+  <option value="1080">1080p</option>
+</select>
+
+<button onclick="downloadVideo()" id="btn">Download</button>
 
 <div class="error" id="error"></div>
 
-  </div>  <div class="result" id="result">
-    <img id="thumbnail" src="" alt="Thumbnail"><div class="result-content">
-  <h2 id="title">YouTube Video</h2>
-
-  <div class="stats">
-    <div class="stat">
-      Quality: <span id="videoQuality">720p</span>
-    </div>
-
-    <div class="stat">
-      Status: <span style="color:#00ff88">Ready</span>
-    </div>
-  </div>
-
-  <a id="downloadLink" class="download-btn" target="_blank">
-    Start Download
-  </a>
 </div>
 
-  </div>  <footer>
-    Developed By Samarth ⚡
-  </footer></div><audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio> <audio id="successSound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio> <audio id="errorSound" src="https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3"></audio>
+<div class="result" id="result">
+  <img id="thumb">
+  <div class="result-content">
+    <h2 id="title"></h2>
+    <p id="q"></p>
+    <a id="link" class="download" target="_blank">Start Download</a>
+  </div>
+</div>
+
+</div>
+
+<!-- Sounds -->
+<audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+<audio id="successSound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio>
+<audio id="errorSound" src="https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3"></audio>
 
 <script>
-function playSound(type){
-  const sound=document.getElementById(type);
-  sound.currentTime=0;
-  sound.play();
+function play(id){
+  const s=document.getElementById(id);
+  s.currentTime=0;
+  s.play();
 }
 
-document.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('videoUrl').addEventListener('focus',()=>{
-    playSound('clickSound');
-  });
-
-  document.getElementById('quality').addEventListener('change',()=>{
-    playSound('clickSound');
-  });
-});
 async function downloadVideo(){
-  const url=document.getElementById('videoUrl').value;
-  const quality=document.getElementById('quality').value;
-  const errorDiv=document.getElementById('error');
-  const resultDiv=document.getElementById('result');
-  const btn=document.getElementById('downloadBtn');
+  const url=document.getElementById("url").value;
+  const quality=document.getElementById("quality").value;
 
-  errorDiv.style.display='none';
-  resultDiv.style.display='none';
+  const error=document.getElementById("error");
+  const result=document.getElementById("result");
+  const btn=document.getElementById("btn");
+
+  error.style.display="none";
+  result.style.display="none";
 
   if(!url){
-    errorDiv.innerText='Please enter a YouTube URL';
-    playSound('errorSound');
-    errorDiv.style.display='block';
+    error.innerText="Enter URL";
+    error.style.display="block";
+    play("errorSound");
     return;
   }
 
   try{
-    btn.innerText='Fetching Video...';
-    playSound('clickSound');
+    btn.innerText="Loading...";
+    play("clickSound");
 
-    const api=`https://yt-vedio-download-api.vercel.app/api/direct?url=${encodeURIComponent(url)}&quality=${quality}`;
+    const api=`/api/download?url=${encodeURIComponent(url)}&quality=${quality}`;
 
-    const response=await fetch(api);
-    const data=await response.json();
+    const res=await fetch(api);
+    const data=await res.json();
 
-    document.getElementById('thumbnail').src=data.thumbnail || '';
-    document.getElementById('title').innerText=data.title || 'YouTube Video';
-    document.getElementById('videoQuality').innerText=quality+'p';
-    document.getElementById('downloadLink').href=data.download || data.url || '#';
+    document.getElementById("thumb").src=data.thumbnail;
+    document.getElementById("title").innerText=data.title;
+    document.getElementById("q").innerText=quality+"p";
+    document.getElementById("link").href=data.download || data.url;
 
-    resultDiv.style.display='block';
-    playSound('successSound');
+    result.style.display="block";
+    play("successSound");
 
-  }catch(err){
-    errorDiv.innerText='Failed to fetch video data';
-    playSound('errorSound');
-    errorDiv.style.display='block';
+  }catch(e){
+    error.innerText="Failed to fetch video";
+    error.style.display="block";
+    play("errorSound");
   }
 
-  btn.innerText='Download Now';
+  btn.innerText="Download";
 }
-</script></body>
-</html>
+</script>
+
+</body>
+  </html>
