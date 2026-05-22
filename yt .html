@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samarth Premium Downloader</title>  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      background:#000;
+      color:#fff;
+      min-height:100vh;
+      overflow-x:hidden;
+      position:relative;
+    }
+
+    .bg{
+      position:fixed;
+      inset:0;
+      background:linear-gradient(135deg,rgba(255,0,90,.15),#000,rgba(0,120,255,.15));
+      z-index:-2;
+    }
+
+    .blur1,.blur2{
+      position:fixed;
+      width:320px;
+      height:320px;
+      border-radius:50%;
+      filter:blur(120px);
+      z-index:-1;
+    }
+
+    .blur1{
+      background:#ff004c;
+      top:40px;
+      left:40px;
+    }
+
+    .blur2{
+      background:#0066ff;
+      bottom:40px;
+      right:40px;
+    }
+
+    .container{
+      width:100%;
+      max-width:850px;
+      margin:auto;
+      padding:40px 20px;
+    }
+
+    .logo{
+      text-align:center;
+      margin-bottom:40px;
+    }
+
+    .logo h1{
+      font-size:70px;
+      font-weight:900;
+      background:linear-gradient(to right,#ff004c,#ff00c8,#0099ff);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .logo p{
+      color:#aaa;
+      letter-spacing:4px;
+      margin-top:10px;
+      text-transform:uppercase;
+    }
+
+    .card{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.1);
+      backdrop-filter:blur(20px);
+      border-radius:30px;
+      padding:30px;
+      box-shadow:0 0 40px rgba(0,0,0,.5);
+    }
+
+    .input-group{
+      margin-bottom:20px;
+    }
+
+    .input-group label{
+      display:block;
+      margin-bottom:10px;
+      color:#aaa;
+      font-size:14px;
+    }
+
+    .input-group input,
+    .input-group select{
+      width:100%;
+      padding:16px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(0,0,0,.5);
+      color:#fff;
+      outline:none;
+      font-size:15px;
+    }
+
+    button{
+      width:100%;
+      padding:16px;
+      border:none;
+      border-radius:18px;
+      background:linear-gradient(to right,#ff004c,#0066ff);
+      color:#fff;
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.3s;
+    }
+
+    button:hover{
+      transform:scale(1.03);
+    }
+
+    .error{
+      display:none;
+      margin-top:20px;
+      padding:14px;
+      border-radius:16px;
+      background:rgba(255,0,0,.1);
+      border:1px solid rgba(255,0,0,.2);
+      color:#ff8080;
+      text-align:center;
+    }
+
+    .result{
+      display:none;
+      margin-top:30px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:30px;
+      overflow:hidden;
+    }
+
+    .result img{
+      width:100%;
+      height:300px;
+      object-fit:cover;
+    }
+
+    .result-content{
+      padding:25px;
+    }
+
+    .result-content h2{
+      margin-bottom:20px;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:15px;
+      margin-bottom:20px;
+    }
+
+    .stat{
+      background:rgba(0,0,0,.4);
+      padding:15px;
+      border-radius:16px;
+      color:#aaa;
+    }
+
+    .download-btn{
+      display:block;
+      width:100%;
+      text-align:center;
+      padding:16px;
+      border-radius:18px;
+      background:linear-gradient(to right,#00c853,#00e676);
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+      transition:.3s;
+    }
+
+    .download-btn:hover{
+      transform:scale(1.03);
+    }
+
+    footer{
+      text-align:center;
+      margin-top:40px;
+      color:#777;
+    }
+
+    @media(max-width:768px){
+      .logo h1{
+        font-size:50px;
+      }
+
+      .stats{
+        grid-template-columns:1fr;
+      }
+    }
+  </style></head>
+<body><div class="bg"></div>
+<div class="blur1"></div>
+<div class="blur2"></div><div class="container">  <div class="logo">
+    <h1>SAMARTH</h1>
+    <p>Premium YouTube Downloader</p>
+  </div>  <div class="card"><div class="input-group">
+  <label>YouTube Video URL</label>
+  <input type="text" id="videoUrl" placeholder="Paste YouTube link here...">
+</div>
+
+<div class="input-group">
+  <label>Select Quality</label>
+  <select id="quality">
+    <option value="144">144p</option>
+    <option value="240">240p</option>
+    <option value="360">360p</option>
+    <option value="480">480p</option>
+    <option value="720" selected>720p</option>
+    <option value="1080">1080p</option>
+  </select>
+</div>
+
+<button onclick="downloadVideo()" id="downloadBtn">Download Now</button>
+
+<div class="error" id="error"></div>
+
+  </div>  <div class="result" id="result">
+    <img id="thumbnail" src="" alt="Thumbnail"><div class="result-content">
+  <h2 id="title">YouTube Video</h2>
+
+  <div class="stats">
+    <div class="stat">
+      Quality: <span id="videoQuality">720p</span>
+    </div>
+
+    <div class="stat">
+      Status: <span style="color:#00ff88">Ready</span>
+    </div>
+  </div>
+
+  <a id="downloadLink" class="download-btn" target="_blank">
+    Start Download
+  </a>
+</div>
+
+  </div>  <footer>
+    Developed By Samarth ⚡
+  </footer></div><audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio> <audio id="successSound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio> <audio id="errorSound" src="https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3"></audio>
+
+<script>
+function playSound(type){
+  const sound=document.getElementById(type);
+  sound.currentTime=0;
+  sound.play();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('videoUrl').addEventListener('focus',()=>{
+    playSound('clickSound');
+  });
+
+  document.getElementById('quality').addEventListener('change',()=>{
+    playSound('clickSound');
+  });
+});
+async function downloadVideo(){
+  const url=document.getElementById('videoUrl').value;
+  const quality=document.getElementById('quality').value;
+  const errorDiv=document.getElementById('error');
+  const resultDiv=document.getElementById('result');
+  const btn=document.getElementById('downloadBtn');
+
+  errorDiv.style.display='none';
+  resultDiv.style.display='none';
+
+  if(!url){
+    errorDiv.innerText='Please enter a YouTube URL';
+    playSound('errorSound');
+    errorDiv.style.display='block';
+    return;
+  }
+
+  try{
+    btn.innerText='Fetching Video...';
+    playSound('clickSound');
+
+    const api=`https://yt-vedio-download-api.vercel.app/api/direct?url=${encodeURIComponent(url)}&quality=${quality}`;
+
+    const response=await fetch(api);
+    const data=await response.json();
+
+    document.getElementById('thumbnail').src=data.thumbnail || '';
+    document.getElementById('title').innerText=data.title || 'YouTube Video';
+    document.getElementById('videoQuality').innerText=quality+'p';
+    document.getElementById('downloadLink').href=data.download || data.url || '#';
+
+    resultDiv.style.display='block';
+    playSound('successSound');
+
+  }catch(err){
+    errorDiv.innerText='Failed to fetch video data';
+    playSound('errorSound');
+    errorDiv.style.display='block';
+  }
+
+  btn.innerText='Download Now';
+}
+</script></body>
+</html>
